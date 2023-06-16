@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import requests from "../../api/requests/requests";
 import {
+  EndpointsEnum,
   LocalStorageKeysEnum,
   PublicRoutesEnum,
   RequestTypes,
@@ -10,6 +11,7 @@ import styles from "./RequestPage.module.css";
 import Button from "../../ui-kit/Button/Button";
 
 interface HistoryListModel {
+  id: number;
   time: string;
   requestUrl: string;
   status: string;
@@ -34,52 +36,43 @@ const RequestPage: React.FC = () => {
         return await requests
           .getReq()
           .then((r) => {
-            setReqHistory((prevState) => {
-              return [
-                ...prevState,
-                {
-                  time: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
-                  requestUrl: r.data.url,
-                  status: "fulfilled",
-                },
-              ];
-            });
+            addHistoryRow(r.data.url, "Успешно");
           })
-          .catch(() => alert("Ошибка при запросе"))
+          .catch(() => {
+            addHistoryRow(
+              `${import.meta.env.VITE_API_URL}/${EndpointsEnum.GET}`,
+              "Ошибка"
+            );
+            alert("Ошибка при запросе");
+          })
           .finally(() => setIsLoading(false));
       case RequestTypes.POST:
         return await requests
           .postReq()
           .then((r) => {
-            setReqHistory((prevState) => {
-              return [
-                ...prevState,
-                {
-                  time: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
-                  requestUrl: r.data.url,
-                  status: "fulfilled",
-                },
-              ];
-            });
+            addHistoryRow(r.data.url, "Успешно");
           })
-          .catch(() => alert("Ошибка при запросе"))
+          .catch(() => {
+            addHistoryRow(
+              `${import.meta.env.VITE_API_URL}/${EndpointsEnum.POST}`,
+              "Ошибка"
+            );
+            alert("Ошибка при запросе");
+          })
           .finally(() => setIsLoading(false));
       case RequestTypes.DELETE:
         return requests
           .deleteReq()
           .then((r) => {
-            setReqHistory((prevState) => {
-              return [
-                ...prevState,
-                {
-                  time: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
-                  requestUrl: r.data.url,
-                  status: "fulfilled",
-                },
-              ];
-            });
+            addHistoryRow(r.data.url, "Успешно");
           })
-          .catch(() => alert("Ошибка при запросе"))
+          .catch(() => {
+            addHistoryRow(
+              `${import.meta.env.VITE_API_URL}/${EndpointsEnum.DELETE}`,
+              "Ошибка"
+            );
+            alert("Ошибка при запросе");
+          })
           .finally(() => setIsLoading(false));
       default:
         alert("Нет такого метода");
@@ -87,6 +80,19 @@ const RequestPage: React.FC = () => {
     setIsLoading(false);
   }, [params]);
   //funcTools
+  const addHistoryRow = (url: string, status: string) => {
+    setReqHistory((prevState) => {
+      return [
+        ...prevState,
+        {
+          id: new Date().getTime(),
+          time: `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`,
+          requestUrl: url,
+          status: status,
+        },
+      ];
+    });
+  };
   const changeVisible = useCallback(() => {
     setIsVisible((prev) => !prev);
   }, []);
