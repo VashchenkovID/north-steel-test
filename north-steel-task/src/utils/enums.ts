@@ -12,3 +12,7 @@ export enum EndpointsEnum {
   POST = "post",
   DELETE = "delete",
 }
+
+export enum LocalStorageKeysEnum {
+  HISTORY = "history",
+}

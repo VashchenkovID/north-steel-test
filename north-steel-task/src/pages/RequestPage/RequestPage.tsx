@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import requests from "../../api/requests/requests";
-import { PublicRoutesEnum, RequestTypes } from "../../utils/enums";
+import {
+  LocalStorageKeysEnum,
+  PublicRoutesEnum,
+  RequestTypes,
+} from "../../utils/enums";
 import styles from "./RequestPage.module.css";
 import Button from "../../ui-kit/Button/Button";
 
@@ -14,7 +18,10 @@ const RequestPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [reqHistory, setReqHistory] = useState<
     Array<{ time: string; requestUrl: string; status: string }>
-  >(JSON.parse(localStorage.getItem("history")) || []);
+  >(
+    JSON.parse(localStorage.getItem(LocalStorageKeysEnum.HISTORY) as string) ||
+      []
+  );
   //Request
   const sendRequest = useCallback(async () => {
     setIsLoading(true);
@@ -93,7 +100,10 @@ const RequestPage: React.FC = () => {
   }, [isVisible]);
   //sideEffects
   useEffect(() => {
-    localStorage.setItem("history", JSON.stringify(reqHistory));
+    localStorage.setItem(
+      LocalStorageKeysEnum.HISTORY,
+      JSON.stringify(reqHistory)
+    );
   }, [reqHistory]);
 
   return (
