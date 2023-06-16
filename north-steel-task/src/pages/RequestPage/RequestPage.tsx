@@ -9,6 +9,12 @@ import {
 import styles from "./RequestPage.module.css";
 import Button from "../../ui-kit/Button/Button";
 
+interface HistoryListModel {
+  time: string;
+  requestUrl: string;
+  status: string;
+}
+
 const RequestPage: React.FC = () => {
   //hooks
   const params = useParams();
@@ -16,9 +22,7 @@ const RequestPage: React.FC = () => {
   //state
   const [isVisible, setIsVisible] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [reqHistory, setReqHistory] = useState<
-    Array<{ time: string; requestUrl: string; status: string }>
-  >(
+  const [reqHistory, setReqHistory] = useState<Array<HistoryListModel>>(
     JSON.parse(localStorage.getItem(LocalStorageKeysEnum.HISTORY) as string) ||
       []
   );

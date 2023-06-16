@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
+import { ResponseModel } from "../models/ResponseModel/ResponseModel";
 declare const _default: {
-    getReq: () => Promise<AxiosResponse<any>>;
-    postReq: () => Promise<AxiosResponse<any>>;
-    deleteReq: () => Promise<AxiosResponse<any>>;
+    getReq: () => Promise<AxiosResponse<ResponseModel>>;
+    postReq: () => Promise<AxiosResponse<ResponseModel>>;
+    deleteReq: () => Promise<AxiosResponse<ResponseModel>>;
 };
 export default _default;

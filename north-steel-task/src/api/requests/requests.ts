@@ -1,16 +1,16 @@
 import axios, { AxiosResponse } from "axios";
 import { EndpointsEnum } from "../../utils/enums";
+import { ResponseModel } from "../models/ResponseModel/ResponseModel";
 
 const $host = axios.create({
-  baseURL:import.meta.env.VITE_API_URL
+  baseURL: import.meta.env.VITE_API_URL,
 });
-console.log()
 export default {
-  getReq: (): Promise<AxiosResponse<any>> => {
-    return $host.get(`${EndpointsEnum.GET}`)
+  getReq: (): Promise<AxiosResponse<ResponseModel>> => {
+    return $host.get(`${EndpointsEnum.GET}`);
   },
-  postReq: (): Promise<AxiosResponse<any>> =>
-      $host.post(`${EndpointsEnum.POST}`),
-  deleteReq: (): Promise<AxiosResponse<any>> =>
-      $host.delete(`${EndpointsEnum.DELETE}`),
+  postReq: (): Promise<AxiosResponse<ResponseModel>> =>
+    $host.post(`${EndpointsEnum.POST}`),
+  deleteReq: (): Promise<AxiosResponse<ResponseModel>> =>
+    $host.delete(`${EndpointsEnum.DELETE}`),
 };
